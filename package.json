@@ -1,11 +1,10 @@
 {
   "name": "@modnes/custom-element",
   "version": "1.0.0",
-  "description": "Module to help on creation of new custom elements using modnes Data Controller",
+  "description": "Module to help on creation of new custom elements",
   "main": "custom-element.js",
   "scripts": {
-    "test": "standard && nyc mocha",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "test": "standard",
     "build-documentation": "grunt documentation"
   },
   "repository": {
@@ -27,33 +26,11 @@
     "@babel/register": "^7.9.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "chai": "^4.2.0",
-    "coveralls": "^3.0.11",
-    "esm": "^3.2.25",
     "grunt": "^1.1.0",
     "grunt-documentation": "^1.2.3",
-    "jsdom": "^16.2.2",
-    "jsdom-global": "^3.0.2",
-    "mocha": "^6.2.3",
-    "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^15.0.0",
     "standard": "^14.3.3"
-  },
-  "mocha": {
-    "require": [
-      "esm"
-    ]
-  },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text"
-    ]
   },
   "standard": {
     "parser": "babel-eslint"
-  },
-  "dependencies": {
-    "@modnes/data-controller": "^1.1.1"
   }
 }
