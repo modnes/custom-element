@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/modnes/custom-element/issues"
   },
-  "homepage": "https://modnes.github.io/custom-element/",
+  "homepage": "https://github.com/modnes/custom-element",
   "devDependencies": {
     "@babel/register": "^7.9.0",
     "babel-eslint": "^10.1.0",
