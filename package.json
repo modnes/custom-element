@@ -1,0 +1,36 @@
+{
+  "name": "@modnes/custom-element",
+  "version": "1.0.0",
+  "description": "Module to help on creation of new custom elements",
+  "main": "custom-element.js",
+  "scripts": {
+    "test": "standard",
+    "build-documentation": "grunt documentation"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/modnes/custom-element.git"
+  },
+  "keywords": [
+    "module",
+    "element",
+    "front-end"
+  ],
+  "author": "Luiz Henrique Canet Filho <me@luizca.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/modnes/custom-element/issues"
+  },
+  "homepage": "https://github.com/modnes/custom-element",
+  "devDependencies": {
+    "@babel/register": "^7.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "grunt": "^1.1.0",
+    "grunt-documentation": "^1.2.3",
+    "standard": "^14.3.3"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
+}
