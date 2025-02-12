@@ -1,7 +1,8 @@
 {
   "name": "@modnes/custom-element",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Module to help on creation of new custom elements",
+  "type": "module",
   "main": "custom-element.js",
   "scripts": {
     "test": "standard",
