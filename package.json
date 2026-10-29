@@ -5,7 +5,7 @@
   "type": "module",
   "main": "custom-element.js",
   "scripts": {
-    "test": "standard",
+    "lint": "eslint",
     "build-documentation": "grunt documentation"
   },
   "repository": {
@@ -24,14 +24,13 @@
   },
   "homepage": "https://github.com/modnes/custom-element",
   "devDependencies": {
-    "@babel/register": "^7.9.0",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "grunt": "^1.1.0",
-    "grunt-documentation": "^1.2.3",
-    "standard": "^14.3.3"
-  },
-  "standard": {
-    "parser": "babel-eslint"
+    "@eslint/css": "^2.0.1",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
+    "@eslint/markdown": "^8.0.3",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.13.0",
+    "prettier": "3.9.10"
   }
 }
