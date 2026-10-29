@@ -1,5 +1,3 @@
-/* global CustomEvent, HTMLElement */
-
 /**
  * modnes Custom Element
  * @module modnes/custom-element
@@ -18,12 +16,12 @@
  * @property {object}             data      Element data
  */
 export default class CustomElement extends HTMLElement {
-  constructor () {
-    super()
-    this.template = ''
-    this.data = {}
+  constructor() {
+    super();
+    this.template = "";
+    this.data = {};
 
-    this.addEventListener('elementRendered', this.init.bind(this))
+    this.addEventListener("elementRendered", this.init.bind(this));
   }
 
   /**
@@ -32,30 +30,30 @@ export default class CustomElement extends HTMLElement {
    * before the element's contents have been fully parsed.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements}
    */
-  connectedCallback () {
-    this.render()
+  connectedCallback() {
+    this.render();
   }
 
   /**
    * Inserts the Element HTML content
    * @fires CustomEvent#elementRendered
    */
-  render () {
+  render() {
     while (this.firstChild) {
-      this.removeChild(this.firstChild)
+      this.removeChild(this.firstChild);
     }
 
-    if (typeof this.template === 'function') {
-      this.insertAdjacentHTML('beforeEnd', this.template(this.data))
+    if (typeof this.template === "function") {
+      this.insertAdjacentHTML("beforeEnd", this.template(this.data));
     } else {
-      this.insertAdjacentHTML('beforeEnd', this.template)
+      this.insertAdjacentHTML("beforeEnd", this.template);
     }
 
-    this.dispatchEvent(new CustomEvent('elementRendered'))
+    this.dispatchEvent(new CustomEvent("elementRendered"));
   }
 
   /**
    * Invoked each time the element is rendered.
    */
-  init () {}
+  init() {}
 }

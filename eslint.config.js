@@ -7,9 +7,30 @@ import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: globals.browser } },
-  { files: ["**/*.json"], plugins: { json }, language: "json/json", extends: ["json/recommended"] },
-  { files: ["**/*.md"], plugins: { markdown }, language: "markdown/commonmark", extends: ["markdown/recommended"] },
-  { files: ["**/*.css"], plugins: { css }, language: "css/css", extends: ["css/recommended"] },
-  eslintConfigPrettier
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions: { globals: globals.browser },
+  },
+  {
+    files: ["**/*.json"],
+    plugins: { json },
+    language: "json/json",
+    extends: ["json/recommended"],
+    ignores: ["package-lock.json"],
+  },
+  {
+    files: ["**/*.md"],
+    plugins: { markdown },
+    language: "markdown/commonmark",
+    extends: ["markdown/recommended"],
+  },
+  {
+    files: ["**/*.css"],
+    plugins: { css },
+    language: "css/css",
+    extends: ["css/recommended"],
+  },
+  eslintConfigPrettier,
 ]);
