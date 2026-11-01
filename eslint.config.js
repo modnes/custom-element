@@ -8,10 +8,21 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
   {
+    ignores: ["coverage/**"],
+  },
+  {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
+  },
+  {
+    files: ["test/**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      globals: {
+        ...globals.mocha,
+      },
+    },
   },
   {
     files: ["**/*.json"],
