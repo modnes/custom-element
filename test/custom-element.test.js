@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import CustomElement from "../custom-element.js";
+import CustomElement, { SetInjectable } from "../custom-element.js";
 
 if (typeof customElements === "undefined" && typeof window !== "undefined") {
   globalThis.customElements = window.customElements;
@@ -42,6 +42,21 @@ describe("CustomElement", () => {
     });
   });
 
+  describe("addInjectable", () => {
+    it("should register an injectable without throwing", () => {
+      const el = createTestElement();
+      expect(() => el.addInjectable("service", "service")).to.not.throw();
+    });
+
+    it("should support registering multiple injectables", () => {
+      const el = createTestElement();
+      expect(() => {
+        el.addInjectable("service-a", "serviceA");
+        el.addInjectable("service-b", "serviceB");
+      }).to.not.throw();
+    });
+  });
+
   describe("connectedCallback", () => {
     it("should call render when element is connected to the DOM", () => {
       const el = createTestElement();
@@ -50,6 +65,63 @@ describe("CustomElement", () => {
       expect(el.innerHTML).to.equal("");
       document.body.appendChild(el);
       expect(el.innerHTML).to.equal("<p>Connected Content</p>");
+    });
+
+    it("should dispatch request-provider for each registered injectable on connect", () => {
+      const el = createTestElement();
+      const dispatched = [];
+
+      el.addInjectable("dep-a", "depA");
+      el.addInjectable("dep-b", "depB");
+
+      document.addEventListener("request-provider", (e) => {
+        dispatched.push(e.detail.name);
+      });
+
+      document.body.appendChild(el);
+
+      expect(dispatched).to.include("dep-a");
+      expect(dispatched).to.include("dep-b");
+    });
+
+    it("should inject the dependency into the declared property via event detail", () => {
+      const el = createTestElement();
+      const fakeService = { call: () => "ok" };
+
+      el.addInjectable("my-service", "myService");
+
+      document.addEventListener("request-provider", (e) => {
+        if (e.detail.name === "my-service") {
+          e.stopPropagation();
+          e.detail.inject(fakeService);
+        }
+      });
+
+      document.body.appendChild(el);
+
+      expect(el.myService).to.equal(fakeService);
+    });
+
+    it("should dispatch request-provider events before rendering", () => {
+      const order = [];
+      const el = createTestElement();
+
+      el.addInjectable("timing-dep", "timingDep");
+      el.template = () => {
+        order.push("render");
+        return "<p></p>";
+      };
+
+      document.addEventListener("request-provider", (e) => {
+        if (e.detail.name === "timing-dep") {
+          order.push("inject");
+          e.detail.inject("value");
+        }
+      });
+
+      document.body.appendChild(el);
+
+      expect(order).to.deep.equal(["inject", "render"]);
     });
   });
 
@@ -170,6 +242,75 @@ describe("CustomElement", () => {
       expect(capturedThis).to.equal(el);
       expect(capturedEvent).to.be.an.instanceOf(CustomEvent);
       expect(capturedEvent.type).to.equal("elementRendered");
+    });
+  });
+
+  describe("SetInjectable", () => {
+    it("should inject the dependency into a component property when connected", () => {
+      const el = createTestElement();
+      const fakeRepo = { find: () => [] };
+
+      el.addInjectable("repo", "repo");
+      SetInjectable("repo", fakeRepo);
+
+      document.body.appendChild(el);
+
+      expect(el.repo).to.equal(fakeRepo);
+    });
+
+    it("should use document as default target", () => {
+      const el = createTestElement();
+      const fakeLogger = { log: () => {} };
+
+      el.addInjectable("logger", "logger");
+      SetInjectable("logger", fakeLogger);
+
+      document.body.appendChild(el);
+
+      expect(el.logger).to.equal(fakeLogger);
+    });
+
+    it("should accept a custom target element as provider", () => {
+      const provider = document.createElement("div");
+      document.body.appendChild(provider);
+
+      const el = createTestElement();
+      const fakeStore = { get: () => null };
+
+      el.addInjectable("store", "store");
+      SetInjectable("store", fakeStore, provider);
+
+      provider.appendChild(el);
+
+      expect(el.store).to.equal(fakeStore);
+    });
+
+    it("should not inject into unrelated injectables", () => {
+      const el = createTestElement();
+
+      el.addInjectable("target-dep", "targetDep");
+      SetInjectable("other-dep", { unrelated: true });
+
+      document.body.appendChild(el);
+
+      expect(el.targetDep).to.be.undefined;
+    });
+
+    it("should stop propagation so ancestor providers do not also inject", () => {
+      const innerProvider = document.createElement("div");
+      document.body.appendChild(innerProvider);
+
+      const el = createTestElement();
+      const innerValue = { source: "inner" };
+      const outerValue = { source: "outer" };
+
+      el.addInjectable("scoped-dep", "scopedDep");
+      SetInjectable("scoped-dep", outerValue, document.body);
+      SetInjectable("scoped-dep", innerValue, innerProvider);
+
+      innerProvider.appendChild(el);
+
+      expect(el.scopedDep).to.equal(innerValue);
     });
   });
 });
