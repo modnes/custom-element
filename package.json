@@ -1,12 +1,15 @@
 {
   "name": "@modnes/custom-element",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Module to help on creation of new custom elements",
   "type": "module",
   "main": "custom-element.js",
   "scripts": {
-    "test": "standard",
-    "build-documentation": "grunt documentation"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix .",
+    "test": "c8 mocha"
   },
   "repository": {
     "type": "git",
@@ -24,14 +27,38 @@
   },
   "homepage": "https://github.com/modnes/custom-element",
   "devDependencies": {
-    "@babel/register": "^7.9.0",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "grunt": "^1.1.0",
-    "grunt-documentation": "^1.2.3",
-    "standard": "^14.3.3"
+    "@eslint/css": "^2.0.1",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
+    "@eslint/markdown": "^7.5.1",
+    "c8": "^12.0.0",
+    "chai": "^6.3.0",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "esm": "^3.2.25",
+    "globals": "^17.13.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^12.0.3",
+    "prettier": "3.9.10"
   },
-  "standard": {
-    "parser": "babel-eslint"
+  "mocha": {
+    "require": [
+      "esm",
+      "jsdom-global/register"
+    ],
+    "recursive": true,
+    "extension": [
+      "js"
+    ]
+  },
+  "c8": {
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "all": true,
+    "include": [
+      "custom-element.js"
+    ]
   }
 }
