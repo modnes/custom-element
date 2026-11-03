@@ -9,7 +9,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint",
     "lint:fix": "eslint --fix .",
-    "test": "c8 mocha"
+    "test": "c8 mocha",
+    "docs": "documentation build custom-element.js -f md -o wiki/API.md"
   },
   "repository": {
     "type": "git",

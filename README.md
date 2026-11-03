@@ -78,4 +78,39 @@ class DataExample extends CustomElement {
 customElements.define("data-example", DataExample);
 ```
 
+## How to use injectables
+
+```javascript
+import CustomElement from "path/to/@modnes/custom-element/custom-element.js";
+import { SetInjectable } from "path/to/@modnes/custom-element/custom-element.js";
+
+class CustomExample extends CustomElement {
+  service;
+
+  constructor() {
+    super();
+    this.addInjectable("my-injectable", "service");
+    this.template = `
+      <h1>Custom Example</h1>
+      <button type="button">OK</button>
+    `;
+  }
+
+  init() {
+    const BUTTON = this.querySelector("button");
+
+    BUTTON.addEventListener("click", () => {
+      this.service();
+    });
+  }
+}
+
+SetInjectable("my-injectable", new Service());
+
+/**
+ * This provides this tag to be used in HTML: <custom-example></custom-example>
+ */
+customElements.define("custom-example", CustomExample);
+```
+
 See the [API documentation](https://github.com/modnes/custom-element/wiki/API)
